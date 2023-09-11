@@ -1,7 +1,10 @@
 #################################################################################
 # Chat2VIS 
 # https://chat2vis.streamlit.app/
-# Paula Maddigan
+
+
+#### New app ####
+# https://chat2visapp.streamlit.app/#housing
 #################################################################################
 
 import pandas as pd
