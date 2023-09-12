@@ -15,11 +15,11 @@ from classes import get_primer,format_question,run_request
 import warnings
 warnings.filterwarnings("ignore")
 st.set_option('deprecation.showPyplotGlobalUse', False)
-st.set_page_config(page_icon="chat2vis.png",layout="wide",page_title="Chat2VIS")
+st.set_page_config(page_icon="chat2vis.png",layout="wide",page_title="LLM Powered NLP to Visualization")
 st.markdown("<h1 style='text-align: center; font-weight:bold; font-family:comic sans ms; padding-top: 0rem;'> \
-            Chat2VIS</h1>", unsafe_allow_html=True)
-st.markdown("<h2 style='text-align: center;padding-top: 0rem;'>Creating Visualisations using Natural Language \
-            with ChatGPT</h2>", unsafe_allow_html=True)
+            LLM Powered NLP to Visualization</h1>", unsafe_allow_html=True)
+st.markdown("<h2 style='text-align: center;padding-top: 0rem;'>Creating Visualisations from Users Queries  \
+            with Large Language Models</h2>", unsafe_allow_html=True)
 st.sidebar.markdown("<h4  style='text-align: center;font-size:small;color:grey;padding-top: 0rem;padding-bottom: .2rem;'>Chat2VIS: Generating Data \
                     Visualisations via Natural Language using ChatGPT, Codex and GPT-3 \
                  Large Language Models </h4>", unsafe_allow_html=True)
@@ -37,13 +37,13 @@ available_models = {"ChatGPT-4": "gpt-4","ChatGPT-3.5": "gpt-3.5-turbo","GPT-3":
 if "datasets" not in st.session_state:
     datasets = {}
     # Preload datasets
-    datasets["Movies"] = pd.read_csv("movies.csv")
+    # datasets["Movies"] = pd.read_csv("movies.csv")
     datasets["Housing"] =pd.read_csv("housing.csv")
-    datasets["Cars"] =pd.read_csv("cars.csv")
-    datasets["Colleges"] =pd.read_csv("colleges.csv")
-    datasets["Customers & Products"] =pd.read_csv("customers_and_products_contacts.csv")
-    datasets["Department Store"] =pd.read_csv("department_store.csv")
-    datasets["Energy Production"] =pd.read_csv("energy_production.csv")
+    # datasets["Cars"] =pd.read_csv("cars.csv")
+    # datasets["Colleges"] =pd.read_csv("colleges.csv")
+    # datasets["Customers & Products"] =pd.read_csv("customers_and_products_contacts.csv")
+    # datasets["Department Store"] =pd.read_csv("department_store.csv")
+    # datasets["Energy Production"] =pd.read_csv("energy_production.csv")
     st.session_state["datasets"] = datasets
 else:
     # use the list already loaded
@@ -139,8 +139,8 @@ for dataset_num, tab in enumerate(tab_list):
         
 # Insert footer to reference dataset origin  
 footer="""<style>.footer {position: fixed;left: 0;bottom: 0;width: 100%;text-align: center;}</style><div class="footer">
-<p> <a style='display: block; text-align: center;'> Datasets courtesy of NL4DV, nvBench and ADVISor </a></p></div>"""
-st.caption("Datasets courtesy of NL4DV, nvBench and ADVISor")
+<p> <a style='display: block; text-align: center;'> </a></p></div>"""
+st.caption("")
 
 # Hide menu and footer
 # hide_streamlit_style = """
