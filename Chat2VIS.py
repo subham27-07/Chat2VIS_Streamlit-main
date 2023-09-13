@@ -20,14 +20,14 @@ st.markdown("<h1 style='text-align: center; font-weight:bold; font-family:comic 
             LLM Powered NLP to Visualization</h1>", unsafe_allow_html=True)
 st.markdown("<h2 style='text-align: center;padding-top: 0rem;'>Creating Visualisations from Users Queries  \
             with Large Language Models</h2>", unsafe_allow_html=True)
-st.sidebar.markdown("<h4  style='text-align: center;font-size:small;color:grey;padding-top: 0rem;padding-bottom: .2rem;'>Chat2VIS: Generating Data \
-                    Visualisations via Natural Language using ChatGPT, Codex and GPT-3 \
-                 Large Language Models </h4>", unsafe_allow_html=True)
+# st.sidebar.markdown("<h4  style='text-align: center;font-size:small;color:grey;padding-top: 0rem;padding-bottom: .2rem;'>Chat2VIS: Generating Data \
+#                     Visualisations via Natural Language using ChatGPT, Codex and GPT-3 \
+#                  Large Language Models </h4>", unsafe_allow_html=True)
 
 
                  
-st.sidebar.markdown("<h4  style='text-align:center;font-size:small;color:grey;padding-top: 0rem;padding-bottom: .2rem;'>Chat2VIS: Fine-Tuning Data Visualisations using Multilingual \
-Natural Language Text and Pre-Trained Large Language Models </h4>", unsafe_allow_html=True)
+# st.sidebar.markdown("<h4  style='text-align:center;font-size:small;color:grey;padding-top: 0rem;padding-bottom: .2rem;'>Chat2VIS: Fine-Tuning Data Visualisations using Multilingual \
+# Natural Language Text and Pre-Trained Large Language Models </h4>", unsafe_allow_html=True)
 
 
 
