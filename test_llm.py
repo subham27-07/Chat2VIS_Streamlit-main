@@ -16,7 +16,7 @@ summary = lida.summarize(data, summary_method="default", textgen_config=textgen_
 goals = lida.goals(summary, n=1, textgen_config=textgen_config)
 st.write(goals[0])
 
-
+st.set_option('deprecation.showPyplotGlobalUse', False)
 
 
 i = 1
@@ -31,6 +31,15 @@ library="seaborn"
 textgen_config = TextGenerationConfig(n=1, temperature=0.2, use_cache=True)
 charts = lida.visualize(summary=temp, goal=davo, textgen_config=textgen_config, library=library)
 # plot raster image of chart
-plot_raster(charts[0].raster)
+fig1=plot_raster(charts[0].raster)
 
-st.pyplot()
+st.pyplot(fig1)
+
+
+code = charts[0].code
+textgen_config = TextGenerationConfig(n=1, temperature=0, use_cache=True)
+instructions = ["Show only action and adventure movies", "What about movies that have grossed over 100 million?"]
+edited_charts = lida.edit(code=code,  summary=summary, instructions=instructions, library=library, textgen_config=textgen_config)
+fig2=plot_raster(edited_charts[0].raster)
+
+st.pyplot(fig2)
