@@ -56,23 +56,9 @@ with st.expander("Expand here to do the analysis"):
     st.image("https://static.streamlit.io/examples/dice.jpg")
 
 
-######################## checkbox ############################
-
-accessibility = st.sidebar.checkbox('Show me the explanation of the code accessibility')
-
-if accessibility:
-    st.write('Great!')
-
-visualization = st.sidebar.checkbox('Show me the explanation of the visualization ')
-
-if visualization:
-    st.write('Great!')
 
 
-
-######################## checkbox ############################
-
-
+######################## Lida Componenet starts here ############################
 
 # lida = Manager(text_gen = llm("openai", api_key='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')) # 
 # textgen_config = TextGenerationConfig(n=1, temperature=0.5, model="gpt-3.5-turbo-0301", use_cache=True)
@@ -107,7 +93,22 @@ if visualization:
 
 # st.pyplot(fig2)
 
+######################## Lida Componenet ends here ############################
 
+######################## checkbox ############################
+
+accessibility = st.sidebar.checkbox('Show me the explanation of the code accessibility')
+
+if accessibility:
+    st.write('Great!')
+
+visualization = st.sidebar.checkbox('Show me the explanation of the visualization ')
+
+if visualization:
+    st.write('Great!')
+
+
+######################## checkbox ############################
 
 # hide_streamlit_style = """
 #             <style>
