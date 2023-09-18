@@ -19,13 +19,20 @@ st.markdown(new_title, unsafe_allow_html=True)
 
 enc='utf-8'
 spectra=st.sidebar.file_uploader("upload file", type={"csv",'txt'})
-if spectra is not None:
-    spectra_df=pd.read_csv(spectra)
+
+# spectra_df = None  # Initialize spectra_df
+
+if spectra is None:
+    st.write("Please upload the file to get started.")
+else:
+    spectra_df = pd.read_csv(spectra, encoding=enc)
 
 
 with st.expander("Show me the data"):
     st.write(spectra_df)   
 
+
+st.cache_resource(ttl=3600)
 def main():
     global spectra_df
     dataset = spectra_df
@@ -38,7 +45,7 @@ def main():
         with st.expander("Data Report", expanded=True):
             st_profile_report(pr)
 
-st.cache_resource(ttl=3600)
+@st.cache_resource(ttl=3600)
 def gen_profile_report(df, *report_args, **report_kwargs):
     return df.profile_report(*report_args, **report_kwargs)
 
@@ -50,73 +57,107 @@ if __name__ == "__main__":
     main()
 
 
-
-    
-with st.expander("Expand here to do the analysis"):
-    st.image("https://static.streamlit.io/examples/dice.jpg")
-
-
-
-
 ######################## Lida Componenet starts here ############################
 
-# lida = Manager(text_gen = llm("openai", api_key='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')) # 
-# textgen_config = TextGenerationConfig(n=1, temperature=0.5, model="gpt-3.5-turbo-0301", use_cache=True)
+lida = Manager(text_gen = llm("openai", api_key='')) # 
+textgen_config = TextGenerationConfig(n=1, temperature=0.5, model="gpt-3.5-turbo-0301", use_cache=True)
+# textgen_config = TextGenerationConfig(n=1, temperature=0.5, model="gpt-4", use_cache=True)
 
-# summary = lida.summarize(spectra_df, summary_method="default", textgen_config=textgen_config)
-# goals = lida.goals(summary, n=1, textgen_config=textgen_config)
+summary = lida.summarize(spectra_df, summary_method="default", textgen_config=textgen_config)
+goals = lida.goals(summary, n=1, textgen_config=textgen_config)
 # st.write(goals[0])
 
 
-# i = 1
+
+
+title = st.text_input('write your question here')
+title1 = st.text_input('write your follow up question here')
+
+i = 1
+davo = Goal(index=1, question=title, visualization='', rationale='Treat production budget as a categorical variable instead of quantitative')
+goals.append(davo)
+temp = Summary(name=summary['name'], file_name=summary['file_name'], dataset_description=summary['dataset_description'], field_names=summary['field_names'], fields=summary['fields'])
+library="seaborn"
+textgen_config = TextGenerationConfig(n=1, temperature=0.2, use_cache=True)
+charts = lida.visualize(summary=temp, goal=davo, textgen_config=textgen_config, library=library)
+# plot raster image of chart
+fig1=plot_raster(charts[0].raster)
+
+st.pyplot(fig1)
+
+
+code = charts[0].code
+textgen_config = TextGenerationConfig(n=1, temperature=0, use_cache=True)
+
+instructions=title1
+# instructions = ["Show only action and adventure movies", "What about movies that have grossed over 100 million?"]
+edited_charts = lida.edit(code=code,  summary=summary, instructions=instructions, library=library, textgen_config=textgen_config)
+fig2=plot_raster(edited_charts[0].raster)
+
+st.pyplot(fig2)
+
+# def process_first_input():
+#     i = 1
+#     davo = Goal(index=1, question=title, visualization='', rationale='Treat production budget as a categorical variable instead of quantitative')
+#     goals.append(davo)
+#     temp = Summary(name=summary['name'], file_name=summary['file_name'], dataset_description=summary['dataset_description'], field_names=summary['field_names'], fields=summary['fields'])
+#     library="seaborn"
+#     textgen_config = TextGenerationConfig(n=1, temperature=0.2, use_cache=True)
+#     charts = lida.visualize(summary=temp, goal=davo, textgen_config=textgen_config, library=library)
+#     # plot raster image of chart
+#     fig1=plot_raster(charts[0].raster)
+
+#     st.pyplot(fig1)
+#     return charts
+
 
 # title = st.text_input('write your question here')
+# title1 = st.text_input('write your follow up question here')
 
 
-# davo = Goal(index=1, question=title, visualization='', rationale='Treat production budget as a categorical variable instead of quantitative')
-# goals.append(davo)
-# temp = Summary(name=summary['name'], file_name=summary['file_name'], dataset_description=summary['dataset_description'], field_names=summary['field_names'], fields=summary['fields'])
-# library="seaborn"
-# textgen_config = TextGenerationConfig(n=1, temperature=0.2, use_cache=True)
-# charts = lida.visualize(summary=temp, goal=davo, textgen_config=textgen_config, library=library)
-# # plot raster image of chart
-# fig1=plot_raster(charts[0].raster)
 
-# st.pyplot(fig1)
+# if title:  # checks if title is not an empty string
+#     process_first_input()
 
 
-# code = charts[0].code
-# textgen_config = TextGenerationConfig(n=1, temperature=0, use_cache=True)
-# instructions = ["Show only action and adventure movies", "What about movies that have grossed over 100 million?"]
-# edited_charts = lida.edit(code=code,  summary=summary, instructions=instructions, library=library, textgen_config=textgen_config)
-# fig2=plot_raster(edited_charts[0].raster)
 
-# st.pyplot(fig2)
+
 
 ######################## Lida Componenet ends here ############################
 
 ######################## checkbox ############################
 
-accessibility = st.sidebar.checkbox('Show me the explanation of the code accessibility')
+dataSummerizer = st.sidebar.checkbox('Summerize the data and goals for me ')
 
-if accessibility:
-    st.write('Great!')
+@st.cache_resource(ttl=3600)
+def dataSummary():
+    st.write(goals[0])
+
+if dataSummerizer:
+    dataSummary() 
+
+@st.cache_resource(ttl=3600)
+def visualExplanation():
+    explanations = lida.explain(code=code, library=library, textgen_config=textgen_config)
+    for row in explanations[0]:
+        st.write(row["section"]," : ", row["explanation"])
+
+ 
+
+
 
 visualization = st.sidebar.checkbox('Show me the explanation of the visualization ')
-
 if visualization:
-    st.write('Great!')
-
-
+    visualExplanation()
 ######################## checkbox ############################
 
-# hide_streamlit_style = """
-#             <style>
-#             #MainMenu {visibility: hidden;}
-#             footer {visibility: hidden;}
-#             </style>
-#             """
-# st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 
 
