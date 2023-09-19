@@ -8,7 +8,7 @@ from lida.datamodel import Goal, Summary
 import pandas_profiling
 from streamlit_pandas_profiling import st_profile_report
 import openai
-
+import altair as alt
 
 st.set_page_config(layout="wide")
 
@@ -50,6 +50,9 @@ def main():
 def gen_profile_report(df, *report_args, **report_kwargs):
     return df.profile_report(*report_args, **report_kwargs)
 
+# @st.cache(allow_output_mutation=True)
+# def gen_profile_report(df, *report_args, **report_kwargs):
+#     return df.profile_report(*report_args, **report_kwargs)
 
 if __name__ == "__main__":
     main()
@@ -86,20 +89,24 @@ def plot_fig1(title, summary):
     davo = Goal(index=1, question=title, visualization='', rationale='Treat production budget as a categorical variable instead of quantitative')
     goals.append(davo)
     temp = Summary(name=summary['name'], file_name=summary['file_name'], dataset_description=summary['dataset_description'], field_names=summary['field_names'], fields=summary['fields'])
-    library="seaborn"
+    library="altair"
     textgen_config = TextGenerationConfig(n=1, temperature=0.2, use_cache=True)
     charts = lida.visualize(summary=temp, goal=davo, textgen_config=textgen_config, library=library)
-    fig1 = plot_raster(charts[0].raster)
-    st.pyplot(fig1)
+    spec = charts[0].spec
+    altair_chart = alt.Chart.from_dict(spec)
+    altair_chart.data = lida.data
+    st.altair_chart(altair_chart)
     return charts
 
 def plot_fig2(title1, code, summary):
-    library="seaborn"
+    library="altair"
     textgen_config = TextGenerationConfig(n=1, temperature=0, use_cache=True)
     instructions = title1
     edited_charts = lida.edit(code=code, summary=summary, instructions=instructions, library=library, textgen_config=textgen_config)
-    fig2 = plot_raster(edited_charts[0].raster)
-    st.pyplot(fig2)
+    edited_spec = edited_charts[0].spec
+    edited_altair_chart = alt.Chart.from_dict(edited_spec)
+    edited_altair_chart.data = lida.data
+    st.altair_chart(edited_altair_chart)
 
 # Streamlit input
 title = st.text_input('write your question here')

@@ -7,7 +7,7 @@ from lida.utils import plot_raster
 from lida.datamodel import Goal, Summary
 import pandas_profiling
 from streamlit_pandas_profiling import st_profile_report
-
+import altair as alt
 
 st.set_page_config(layout="wide")
 
@@ -59,7 +59,7 @@ if __name__ == "__main__":
 
 ######################## Lida Componenet starts here ############################
 
-lida = Manager(text_gen = llm("openai", api_key='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')) # 
+lida = Manager(text_gen = llm("openai", api_key='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')) # 
 textgen_config = TextGenerationConfig(n=1, temperature=0.5, model="gpt-3.5-turbo-0301", use_cache=True)
 # textgen_config = TextGenerationConfig(n=1, temperature=0.5, model="gpt-4", use_cache=True)
 
@@ -77,11 +77,16 @@ i = 1
 davo = Goal(index=1, question=title, visualization='', rationale='Treat production budget as a categorical variable instead of quantitative')
 goals.append(davo)
 temp = Summary(name=summary['name'], file_name=summary['file_name'], dataset_description=summary['dataset_description'], field_names=summary['field_names'], fields=summary['fields'])
-library="seaborn"
+library="altair"
 textgen_config = TextGenerationConfig(n=1, temperature=0.2, use_cache=True)
 charts = lida.visualize(summary=temp, goal=davo, textgen_config=textgen_config, library=library)
+spec = charts[0].spec 
+new_chart = alt.Chart.from_dict(spec)
+new_chart.data = lida.data
+fig1=new_chart
+
 # plot raster image of chart
-fig1=plot_raster(charts[0].raster)
+# fig1=plot_raster(charts[0].raster)
 
 st.pyplot(fig1)
 
