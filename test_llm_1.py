@@ -85,6 +85,26 @@ goals = lida.goals(summary, n=1, textgen_config=textgen_config)
 
 
 
+# def plot_fig1(title, summary):
+#     davo = Goal(index=1, question=title, visualization='', rationale='Treat production budget as a categorical variable instead of quantitative')
+#     goals.append(davo)
+#     temp = Summary(name=summary['name'], file_name=summary['file_name'], dataset_description=summary['dataset_description'], field_names=summary['field_names'], fields=summary['fields'])
+#     library="seaborn"
+#     textgen_config = TextGenerationConfig(n=1, temperature=0.2, use_cache=True)
+#     charts = lida.visualize(summary=temp, goal=davo, textgen_config=textgen_config, library=library)
+#     fig1 = plot_raster(charts[0].raster)
+#     st.pyplot(fig1)
+#     return charts
+
+# def plot_fig2(title1, code, summary):
+#     library="seaborn"
+#     textgen_config = TextGenerationConfig(n=1, temperature=0, use_cache=True)
+#     instructions = title1
+#     edited_charts = lida.edit(code=code, summary=summary, instructions=instructions, library=library, textgen_config=textgen_config)
+#     fig2 = plot_raster(edited_charts[0].raster)
+#     st.pyplot(fig2)
+
+
 def plot_fig1(title, summary):
     davo = Goal(index=1, question=title, visualization='', rationale='Treat production budget as a categorical variable instead of quantitative')
     goals.append(davo)
@@ -98,15 +118,24 @@ def plot_fig1(title, summary):
     st.altair_chart(altair_chart)
     return charts
 
+
 def plot_fig2(title1, code, summary):
-    library="altair"
+    library="seaborn"
     textgen_config = TextGenerationConfig(n=1, temperature=0, use_cache=True)
     instructions = title1
     edited_charts = lida.edit(code=code, summary=summary, instructions=instructions, library=library, textgen_config=textgen_config)
-    edited_spec = edited_charts[0].spec
-    edited_altair_chart = alt.Chart.from_dict(edited_spec)
-    edited_altair_chart.data = lida.data
-    st.altair_chart(edited_altair_chart)
+    fig2 = plot_raster(edited_charts[0].raster)
+    st.pyplot(fig2)
+
+# def plot_fig2(title1, code, summary):
+#     library="altair"
+#     textgen_config = TextGenerationConfig(n=1, temperature=0, use_cache=True)
+#     instructions = title1
+#     edited_charts = lida.edit(code=code, summary=summary, instructions=instructions, library=library, textgen_config=textgen_config)
+#     edited_spec = edited_charts[0].spec
+#     edited_altair_chart = alt.Chart.from_dict(edited_spec)
+#     edited_altair_chart.data = lida.data
+#     st.altair_chart(edited_altair_chart)
 
 # Streamlit input
 title = st.text_input('write your question here')

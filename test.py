@@ -21,3 +21,4 @@ nl4dv_instance = NL4DV(verbose=False,
 response = nl4dv_instance.analyze_query("Visualize rating and budget")
 
 display(alt.display.html_renderer(response['visList'][0]['vlSpec']), raw=True)
+

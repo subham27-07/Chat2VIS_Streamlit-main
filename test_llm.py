@@ -58,8 +58,8 @@ if __name__ == "__main__":
 
 
 ######################## Lida Componenet starts here ############################
-
-lida = Manager(text_gen = llm("openai", api_key='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')) # 
+# my_key = st.text_input(label = ":key: Paste your key:", help="write down the authenticator",type="password")
+# lida = Manager(text_gen = llm("openai", api_key=my_key)) # 
 textgen_config = TextGenerationConfig(n=1, temperature=0.5, model="gpt-3.5-turbo-0301", use_cache=True)
 # textgen_config = TextGenerationConfig(n=1, temperature=0.5, model="gpt-4", use_cache=True)
 
